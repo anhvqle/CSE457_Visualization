@@ -1,0 +1,30 @@
+body {
+    background-color: azure !important;
+    padding: 1%;
+}
+
+h4 {
+    color: rgb(16, 31, 143);
+}
+
+.bar {
+    fill:green;
+}
+
+svg {
+    padding: 10px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.scatterplot-frame {
+    fill:none;
+    stroke:black;
+    stroke-width:3;
+    width: 70%;
+}

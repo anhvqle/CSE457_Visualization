@@ -1,0 +1,26 @@
+body {
+    background-color: azure !important;
+    padding: 1%;
+}
+
+.col {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+#bad-visualization li {
+    margin: 2px;
+    list-style: circle;
+}
+
+img {
+    width: 100%;
+}
+
+h2 {
+    color: rgb(16, 139, 143);
+}
+
+#alternate-visualization {
+    width: 60%;
+}
