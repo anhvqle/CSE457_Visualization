@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Assignment 1B</title>
+        <style>
+            .barChart {
+                fill: steelblue;
+                stroke: darkgray;
+                stroke-width: 1px;
+            }
+
+            .barChart rect:hover {
+                fill: seagreen;
+            }
+
+            .lines {
+                stroke: steelblue;
+                fill: none
+            }
+
+            .areas {
+                stroke: none;
+                fill: steelblue
+            }
+
+            circle {
+                fill: steelblue;
+            }
+
+            .frame {
+                fill: none;
+                stroke: black;
+                stroke-width: 2px;
+            }
+
+            /* Styles that clean up the layout;
+            * you can ignore these */
+            div {
+                display: inline-block;
+                border: 1px solid lightgray;
+                margin: 1em;
+            }
+
+            div, span {
+                padding: 1em;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h3>CSE 457 Assignment 1B</h3>
+        <span>Anh Le</span>
+        <span>a.v.le@wustl.edu</span>
+        <span>488493</span>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <span>
+            <button onclick="staircase()">Staircase</button>
+        </span>
+
+        <span>
+            <label>Dataset:</label>
+            <select id="dataset" onchange="changeData()">
+                <option value="anscombe_I">Anscombe's Quartet I</option>
+                <option selected value="anscombe_II">Anscombe's Quartet II</option>
+                <option value="anscombe_III">Anscombe's Quartet III</option>
+                <option value="anscombe_IV">Anscombe's Quartet IV</option>
+            </select>
+        </span>
+
+        <span>
+            <input type="checkbox" id="random" onclick="randomSubset()"> Random Subset
+        </span>
+
+        <br/>
+
+        <div>
+            <h2>Bar Charts</h2>
+            <svg width="200" height="200" id="first_bar_chart">
+                <!-- Paste your Part A solution here -->
+                <rect width="65" height="17"></rect>
+                <rect width="95" height="17" y="18"></rect>
+                <rect width="170" height="17" y="36"></rect>
+                <rect width="50" height="17" y="54"></rect>
+                <rect width="80" height="17" y="72"></rect>
+                <rect width="200" height="17" y="90"></rect>
+                <rect width="155" height="17" y="108"></rect>
+                <rect width="125" height="17" y="126"></rect>
+                <rect width="185" height="17" y="144"></rect>
+                <rect width="110" height="17" y="162"></rect>
+                <rect width="140" height="17" y="180"></rect>
+            </svg>
+
+            <svg width="200" height="200">
+                <!-- Paste your Part A solution here -->
+                <rect width="85" height="17"></rect>
+                <rect width="72" height="17" y="18"></rect>
+                <rect width="162.5" height="17" y="36"></rect>
+                <rect width="64" height="17" y="54"></rect>
+                <rect width="108.5" height="17" y="72"></rect>
+                <rect width="149.5" height="17" y="90"></rect>
+                <rect width="125" height="17" y="108"></rect>
+                <rect width="132" height="17" y="126"></rect>
+                <rect width="114" height="17" y="144"></rect>
+                <rect width="104.25" height="17" y="162"></rect>
+                <rect width="120" height="17" y="180"></rect>
+            </svg>
+        </div>
+
+        <div>
+            <h2>Line Charts</h2>
+
+            <svg width="200" height="200">
+                <!-- Paste your Part A solution here -->
+                <path
+                    d="M 0 60 L 15 90 L 30 15 L 45 75 L 60 45 L 75 0 L 90 120 L 105 150 L 120 30 L 135 105 L 150 135"
+                    stroke="black" stroke-width="3" fill="none"
+                />
+            </svg>
+
+            <svg width="200" height="200">
+                <!-- Paste your Part A solution here -->
+                <polyline
+                    fill="none"
+                    stroke="black"
+                    stroke-width="3"
+                    points="0,75 15,88 30,80 45,65 60,71 75,50 90,85 105,122 120,40 135,115 150,104"
+                />
+            </svg>
+        </div>
+
+        <div>
+            <h2>Area Charts</h2>
+
+            <svg width="200" height="200">
+                <!-- Paste your Part A solution here -->
+                <path
+                    d="M 0 175 0 60 L 15 90 L 30 15 L 45 75 L 60 45 L 75 0 L 90 120 L 105 150 L 120 30 L 135 105 L 150 135 165 175"
+                    stroke="black" stroke-width="3" fill="black"
+                />
+            </svg>
+
+            <svg width="200" height="200">
+                <!-- Paste your Part A solution here -->
+                <polyline
+                    fill="black"
+                    stroke="black"
+                    stroke-width="3"
+                    points="0,175 0,75 15,88 30,80 45,65 60,71 75,50 90,85 105,122 120,40 135,115 150,104 165,175"
+                />
+            </svg>
+        </div>
+
+        <div>
+            <h2>Scatterplot</h2>
+
+            <svg width="200" height="200">
+                <!-- Paste your Part A solution here -->
+                <rect width="200" height="200" fill="none" stroke="black" />
+                <circle cx="104" cy="85" r="4" fill="black" />
+                <circle cx="85" cy="98" r="4" fill="black" />
+                <circle cx="132" cy="90" r="4" fill="black" />
+                <circle cx="94.5" cy="75" r="4" fill="black" />
+                <circle cx="113" cy="81" r="4" fill="black" />
+                <circle cx="141" cy="60" r="4" fill="black" />
+                <circle cx="66" cy="95" r="4" fill="black" />
+                <circle cx="47.5" cy="132" r="4" fill="black" />
+                <circle cx="122.5" cy="50" r="4" fill="black" />
+                <circle cx="75.5" cy="125" r="4" fill="black" />
+                <circle cx="57" cy="114" r="4" fill="black" />
+            </svg>
+        </div>
+
+        <footer>
+            <script src="https://d3js.org/d3.v7.min.js"></script>
+            <script type="text/javascript" src="script.js"></script>
+        </footer>
+    </body>
+</html>
