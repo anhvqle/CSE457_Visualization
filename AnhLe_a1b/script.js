@@ -3,7 +3,6 @@
 
 function staircase() {
     // ****** TODO: PART II ******
-    console.log("Staircase");
     let svg = document.getElementById('first_bar_chart');
     let rects = [...svg.getElementsByTagName("rect")];
 
@@ -27,7 +26,6 @@ function getValue(input) {
 }
 
 function update(data) {
-
     // D3 loads all CSV data as strings;
     // while Javascript is pretty smart
     // about interpreting strings as
@@ -47,6 +45,8 @@ function update(data) {
         d.a = parseInt(d.a);
         d.b = parseFloat(d.b);
     });
+
+    console.log("Data", data)
 
 
     // Set up the scales
@@ -68,7 +68,44 @@ function update(data) {
 
     // TODO: Select and update the 'a' bar chart bars
 
+    var first_bar_chart = d3.select("#first_bar_chart")
+    var bars = first_bar_chart.selectAll(".bar")
+        .remove()
+        .exit()
+        .data(data)
+
+    let space = -18;
+
+    bars.enter()
+        .append("rect")
+        .attr("fill", "steelBlue")
+        .attr("class", "bar")
+        .attr("y", (d) => {
+            space += 18;
+            return space;
+        })
+        .attr("height", 17)
+        .attr("width", (d) => aScale(d.a))
+
     // TODO: Select and update the 'b' bar chart bars
+    var second_bar_chart = d3.select("#second_bar_chart")
+    var bars = second_bar_chart.selectAll(".bar")
+        .remove()
+        .exit()
+        .data(data)
+
+    space = -18;
+
+    bars.enter()
+        .append("rect")
+        .attr("fill", "steelBlue")
+        .attr("class", "bar")
+        .attr("y", (d) => {
+            space += 18;
+            return space;
+        })
+        .attr("height", 17)
+        .attr("width", (d) => aScale(d.b))
 
     // TODO: Select and update the 'a' line chart path using this line generator
     var aLineGenerator = d3.line()
@@ -79,7 +116,40 @@ function update(data) {
             return aScale(d.a);
         });
 
+    var first_line_chart = d3.select("#first_line_chart")
+    var line = first_line_chart.selectAll("path")
+        .remove()
+        .exit()
+        .data(data)
+
+    line.enter()
+        .append("path")
+        .attr("fill", "none")
+        .attr("stroke-width", "3")
+        .attr("stroke", "steelBlue")
+        .attr("d", aLineGenerator(data))
+
     // TODO: Select and update the 'b' line chart path (create your own generator)
+    var bLineGenerator = d3.line()
+        .x(function (d, i) {
+            return iScale(i);
+        })
+        .y(function (d) {
+            return aScale(d.b);
+        });
+
+    var second_line_chart = d3.select("#second_line_chart")
+    var line = second_line_chart.selectAll("path")
+        .remove()
+        .exit()
+        .data(data)
+
+    line.enter()
+        .append("path")
+        .attr("fill", "none")
+        .attr("stroke-width", "3")
+        .attr("stroke", "steelBlue")
+        .attr("d", bLineGenerator(data))
 
     // TODO: Select and update the 'a' area chart path using this line generator
     var aAreaGenerator = d3.area()
@@ -91,7 +161,41 @@ function update(data) {
             return aScale(d.a);
         });
 
+    var first_area_chart = d3.select("#first_area_chart")
+    var area = first_area_chart.selectAll("path")
+        .remove()
+        .exit()
+        .data(data)
+
+    area.enter()
+        .append("path")
+        .attr("fill", "steelBlue")
+        .attr("stroke-width", "3")
+        .attr("stroke", "steelBlue")
+        .attr("d", aAreaGenerator(data))
+
     // TODO: Select and update the 'b' area chart path (create your own generator)
+    var bAreaGenerator = d3.area()
+        .x(function (d, i) {
+            return iScale(i);
+        })
+        .y0(0)
+        .y1(function (d) {
+            return aScale(d.b);
+        });
+
+    var second_area_chart = d3.select("#second_area_chart")
+    var area = second_area_chart.selectAll("path")
+        .remove()
+        .exit()
+        .data(data)
+
+    area.enter()
+        .append("path")
+        .attr("fill", "steelBlue")
+        .attr("stroke-width", "3")
+        .attr("stroke", "steelBlue")
+        .attr("d", bAreaGenerator(data))
 
     // TODO: Select and update the scatterplot points
 
@@ -99,7 +203,6 @@ function update(data) {
 }
 
 function changeData() {
-    console.log("changeData");
     // // Load the file indicated by the select menu
     var dataFile = document.getElementById('dataset').value;
     if (document.getElementById('random').checked) {
@@ -111,7 +214,6 @@ function changeData() {
 }
 
 function randomSubset() {
-    console.log("randomSubset");
     // Load the file indicated by the select menu,
     // and then slice out a random chunk before
     // passing the data to update()
