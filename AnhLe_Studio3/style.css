@@ -1,0 +1,14 @@
+#container {
+    margin-top: 20px;
+    font-size: 2em;
+    font-weight: 1000;
+}
+
+body {
+    padding: 1%;
+}
+
+.city-label {
+    font-size: 11px;
+    text-anchor: middle;
+}
