@@ -6,10 +6,6 @@ function staircase() {
     let svg = document.getElementById('first_bar_chart');
     let rects = [...svg.getElementsByTagName("rect")];
 
-    for (let i = 0; i < rects.length; i++){
-        console.log(getValue(rects[i]));
-    }
-
     rects = rects.sort((a, b) => getValue(a) - getValue(b));
 
     let y = 0;
@@ -46,9 +42,6 @@ function update(data) {
         d.b = parseFloat(d.b);
     });
 
-    console.log("Data", data)
-
-
     // Set up the scales
     var aScale = d3.scaleLinear()
         .domain([0, d3.max(data, function (d) {
@@ -67,67 +60,85 @@ function update(data) {
     // ****** TODO: PART III (you will also edit in PART V) ******
 
     // TODO: Select and update the 'a' bar chart bars
-
     var first_bar_chart = d3.select("#first_bar_chart")
-    var bars = first_bar_chart.selectAll(".bar")
-        .remove()
+
+    first_bar_chart.selectAll(".bar").remove()
         .exit()
         .data(data)
-
-    let space = -18;
-
-    bars.enter()
+        .enter()
         .append("rect")
         .attr("fill", "steelBlue")
         .attr("class", "bar")
-        .attr("y", (d) => {
-            space += 18;
-            return space;
-        })
-        .attr("height", 17)
+        .attr("y", (_, i) => i*(200/data.length))
+        .attr("height", 200/data.length - 1)
+        .attr("width", 0)
+        .transition()
+        .duration(750)
         .attr("width", (d) => aScale(d.a))
+
+    first_bar_chart.selectAll("rect").on("mouseover", function(d) {
+        d3.select(this).attr("fill", "orange")
+    })
+    .on("mouseout", function(d) {
+        d3.select(this).attr("fill", "steelBlue")
+    })
 
     // TODO: Select and update the 'b' bar chart bars
     var second_bar_chart = d3.select("#second_bar_chart")
-    var bars = second_bar_chart.selectAll(".bar")
-        .remove()
+        
+    second_bar_chart.selectAll(".bar").remove()
         .exit()
         .data(data)
-
-    space = -18;
-
-    bars.enter()
+        .enter()
         .append("rect")
         .attr("fill", "steelBlue")
         .attr("class", "bar")
-        .attr("y", (d) => {
-            space += 18;
-            return space;
-        })
-        .attr("height", 17)
+        .attr("y", (_, i) => i*(200/data.length))
+        .attr("height", 200/data.length - 1)
+        .attr("width", 0)
+        .transition()
+        .duration(750)
         .attr("width", (d) => aScale(d.b))
 
+    second_bar_chart.selectAll("rect").on("mouseover", function(d) {
+        d3.select(this).attr("fill", "#993430")
+    })
+    .on("mouseout", function(d) {
+        d3.select(this).attr("fill", "steelBlue")
+    })
+
     // TODO: Select and update the 'a' line chart path using this line generator
+    var lineGenerator = d3.line()
+        .x(function (d, i) {
+            return 0;
+        })
+        .y(function (d) {
+            return 100;
+        });
+
     var aLineGenerator = d3.line()
         .x(function (d, i) {
             return iScale(i);
         })
         .y(function (d) {
-            return aScale(d.a);
+            return 200 - aScale(d.a);
         });
 
     var first_line_chart = d3.select("#first_line_chart")
-    var line = first_line_chart.selectAll("path")
+    first_line_chart.selectAll("path")
         .remove()
         .exit()
         .data(data)
-
-    line.enter()
+        .enter()
         .append("path")
         .attr("fill", "none")
         .attr("stroke-width", "3")
         .attr("stroke", "steelBlue")
+        .attr("d", lineGenerator(data))
+        .transition()
+        .duration(750)
         .attr("d", aLineGenerator(data))
+
 
     // TODO: Select and update the 'b' line chart path (create your own generator)
     var bLineGenerator = d3.line()
@@ -135,20 +146,22 @@ function update(data) {
             return iScale(i);
         })
         .y(function (d) {
-            return aScale(d.b);
+            return 200 - bScale(d.b);
         });
 
     var second_line_chart = d3.select("#second_line_chart")
-    var line = second_line_chart.selectAll("path")
+    second_line_chart.selectAll("path")
         .remove()
         .exit()
         .data(data)
-
-    line.enter()
+        .enter()
         .append("path")
         .attr("fill", "none")
         .attr("stroke-width", "3")
         .attr("stroke", "steelBlue")
+        .attr("d", lineGenerator(data))
+        .transition()
+        .duration(750)
         .attr("d", bLineGenerator(data))
 
     // TODO: Select and update the 'a' area chart path using this line generator
@@ -156,18 +169,17 @@ function update(data) {
         .x(function (d, i) {
             return iScale(i);
         })
-        .y0(0)
+        .y0(200)
         .y1(function (d) {
-            return aScale(d.a);
+            return 200 - aScale(d.a);
         });
 
     var first_area_chart = d3.select("#first_area_chart")
-    var area = first_area_chart.selectAll("path")
+    first_area_chart.selectAll("path")
         .remove()
         .exit()
         .data(data)
-
-    area.enter()
+        .enter()
         .append("path")
         .attr("fill", "steelBlue")
         .attr("stroke-width", "3")
@@ -179,25 +191,59 @@ function update(data) {
         .x(function (d, i) {
             return iScale(i);
         })
-        .y0(0)
+        .y0(200)
         .y1(function (d) {
-            return aScale(d.b);
+            return 200 - bScale(d.b);
         });
 
     var second_area_chart = d3.select("#second_area_chart")
-    var area = second_area_chart.selectAll("path")
+    second_area_chart.selectAll("path")
         .remove()
         .exit()
         .data(data)
-
-    area.enter()
+        .enter()
         .append("path")
         .attr("fill", "steelBlue")
         .attr("stroke-width", "3")
         .attr("stroke", "steelBlue")
+        .transition()
+        .duration(750)
         .attr("d", bAreaGenerator(data))
 
     // TODO: Select and update the scatterplot points
+    var scatterplot = d3.select("#scatterplot")
+    scatterplot.selectAll(".circle")
+        .remove()
+        .exit()
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("fill", "steelBlue")
+        .attr("class", "circle")
+        .transition()
+        .duration(750)
+        .attr("r", 4)
+        .attr("cx", (d) => d.a * 10)
+        .attr("cy", (d) => 175 - d.b * 10)
+
+
+    scatterplot.selectAll(".circle").on("mouseover", function(d) {
+        let currentDotX = +d3.select(this).attr("cx") / 10;
+        let currentDotY = ((175 - d3.select(this).attr("cy")) / 10).toFixed(2);
+
+        console.log("Current point's coordinate: ", currentDotX, currentDotY);
+        d3.select(this).attr("r", 6)
+        scatterplot.append("text")
+            .attr("x", currentDotX * 10 - 10)
+            .attr("y", 200 - currentDotY * 10)
+            .attr("font-size", "0.75em")
+            .style('fill', 'darkOrange')
+            .text([currentDotX, " " + currentDotY]);
+    })
+    .on("mouseout", function(d) {
+        d3.select(this).attr("r", 4)
+        d3.select("text").remove();
+    })
 
     // ****** TODO: PART IV ******
 }
