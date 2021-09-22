@@ -97,6 +97,48 @@ YearChart.prototype.update = function(){
     //Election information corresponding to that year should be loaded and passed to
     // the update methods of other visualizations
 
+    console.log(this)
+
+    let dottedLines = self.svg.selectAll("line")
+        .data(self.electionWinners)
+        .enter()
+        .append("line")
+        .attr("class", "lineChart")
+        .attr("x1", self.svgBounds.left)
+        .attr("y1", 50)
+        .attr("x2", self.svgBounds.right)
+        .attr("y2", 50)
+
+    let circles = self.svg.selectAll("circle")
+        .data(self.electionWinners)
+        .enter()
+        .append("circle")
+        .attr("class", (d) => this.chooseClass(d.PARTY))
+        .attr("fill", function(d) {
+            if(d.PARTY === "D")
+                return "blue";
+            else
+                return "red";
+        })
+        .attr("cx", (d, i) => 30 + i * self.svgWidth/self.electionWinners.length)
+        .attr("cy", 50)
+        .attr("r", 10)
+        .on("mouseover", function() {
+            d3.select(this).style("stroke", "black")
+            d3.select(this).style("stroke-width", "1.5")
+        })
+        .on("mouseout", function(d) {
+            d3.select(this).style("stroke", "none")
+        })
+
+    let yearTexts = self.svg.selectAll("text")
+        .data(self.electionWinners)
+        .enter()
+        .append("text")
+        .attr("x", (d, i) => 15 + i * self.svgWidth/self.electionWinners.length)
+        .attr("y", 75)
+        .attr("font-size", "0.75em")
+        .text((d) => d.YEAR);
 
     //******* TODO: EXTRA CREDIT *******
 
