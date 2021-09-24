@@ -57,7 +57,65 @@ ElectoralVoteChart.prototype.chooseClass = function (party) {
 ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var self = this;
 
+    debugger;
+
     // ******* TODO: PART II *******
+    let availableEV = d3.sum(electionResult, d => d.Total_EV);
+
+    let IVotes = [], DVotes = [], RVotes = [];
+    let totalIVotes = 0, totalDVotes = 0, totalRVotes = 0;
+
+    electionResult.forEach((d) => {
+        if(d.I_Percentage > d.D_Percentage && d.I_Percentage > d.R_Percentage){
+            totalIVotes += d.Total_EV;
+            IVotes.push(d);
+        }
+        else if(d.D_Percentage > d.R_Percentage){
+            totalDVotes += d.Total_EV;
+            DVotes.push(d);
+        }
+        else if(d.R_Percentage > d.D_Percentage){
+            totalRVotes += d.Total_EV;
+            RVotes.push(d);
+        }
+    });
+
+    DVotes.sort((d1, d2) => (d2.D_Percentage - d2.R_Percentage) - (d1.D_Percentage - d1.R_Percentage));
+    RVotes.sort((d1, d2) => (d1.R_Percentage - d1.D_Percentage) - (d2.R_Percentage - d2.D_Percentage));
+
+    let data = IVotes.concat(DVotes, RVotes);
+
+    let sum = 0;
+    data.forEach((d) => {
+        d.x = sum;
+        sum += d.Total_EV;
+    })
+
+    console.log(data);
+
+    let electoralVoteScale = d3.scaleLinear()
+        .domain([0, availableEV])
+        .range([0, self.svgWidth]);
+
+    let bars = self.svg.selectAll(".electoralVotes").remove()
+        .exit()
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class", "electoralVotes")
+        .attr("x", (d) => electoralVoteScale(d.x))
+        .attr("y", 75) 
+        .attr("width", (d) => electoralVoteScale(d.Total_EV))
+        .attr("height", self.svgHeight/5)
+        .attr("fill", (d) => colorScale(d.Total_EV))
+        .attr("fill", function(d) {
+            if(d.I_Percentage > d.D_Percentage && d.I_Percentage > d.R_Percentage)
+                return "green";
+            else if(d.D_Percentage > d.R_Percentage)
+                return colorScale(0 - d.Total_EV);
+            else if(d.R_Percentage > d.D_Percentage)
+                return colorScale(d.Total_EV);
+        })
 
     //Group the states based on the winning party for the state;
     //then sort them based on the margin of victory

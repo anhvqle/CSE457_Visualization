@@ -97,7 +97,11 @@ YearChart.prototype.update = function(){
     //Election information corresponding to that year should be loaded and passed to
     // the update methods of other visualizations
 
-    console.log(this)
+    console.log(this);
+
+    let yearScale = d3.scaleLinear()
+        .domain([d3.min(this.electionWinners, (d) => +d.YEAR), d3.max(this.electionWinners, (d) => +d.YEAR)])
+        .range([self.margin.left, self.svgWidth - self.margin.left]);
 
     let dottedLines = self.svg.selectAll("line")
         .data(self.electionWinners)
@@ -114,21 +118,37 @@ YearChart.prototype.update = function(){
         .enter()
         .append("circle")
         .attr("class", (d) => this.chooseClass(d.PARTY))
-        .attr("fill", function(d) {
-            if(d.PARTY === "D")
-                return "blue";
-            else
-                return "red";
+        .attr("id", (d) => d.YEAR)
+        .attr('cx',function(d) {
+            let y = +d.YEAR;
+            return yearScale(y);
         })
-        .attr("cx", (d, i) => 30 + i * self.svgWidth/self.electionWinners.length)
         .attr("cy", 50)
         .attr("r", 10)
-        .on("mouseover", function() {
+        .on("click", function() {
+            self.svg.selectAll("circle").style("stroke", "none")
             d3.select(this).style("stroke", "black")
             d3.select(this).style("stroke-width", "1.5")
-        })
-        .on("mouseout", function(d) {
-            d3.select(this).style("stroke", "none")
+
+            let year = d3.select(this).attr('id');
+            let filePath = `data/election-results-${year}.csv`
+
+            d3.csv(filePath).then(data => {
+                    data.forEach(function (d) {
+                        d.Total_EV = +d.Total_EV;
+                        d.D_Percentage = +d.D_Percentage;
+                        d.D_Votes = +d.D_Votes;
+                        d.R_Percentage = +d.R_Percentage;
+                        d.R_Votes = +d.R_Votes;
+                        d.I_Percentage = +d.I_Percentage;
+                        d.I_Votes = +d.I_Votes;
+                        d.Year = +d.Year;
+                    });
+                    self.electoralVoteChart.update(data, self.colorScale)
+                })
+            .catch(error => {
+                console.error("Error loading the data")
+            });
         })
 
     let yearTexts = self.svg.selectAll("text")
