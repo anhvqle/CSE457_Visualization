@@ -22,7 +22,7 @@ h1 {
 
 .yeartext, .tilestext, .brushtext{
     text-anchor:middle;
-    font-size: 24px;
+    font-size: 15px;
     fill: #565656;
     stroke-width: 0.1px;
     /*stroke: #e5e5e5;*/
@@ -30,11 +30,11 @@ h1 {
 
 .electoralVotesNote, .votesPercentageNote{
     text-anchor:middle;
-    font-size: 24px;
+    font-size: 15px;
 }
 
 .electoralVoteText, .votesPercentageText{
-    font-size: 35px;
+    font-size: 15px;
 }
 .end{
     text-anchor:end;

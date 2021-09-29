@@ -57,48 +57,61 @@ ElectoralVoteChart.prototype.chooseClass = function (party) {
 ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var self = this;
 
-    debugger;
-
     // ******* TODO: PART II *******
     let availableEV = d3.sum(electionResult, d => d.Total_EV);
 
-    let IVotes = [], DVotes = [], RVotes = [];
-    let totalIVotes = 0, totalDVotes = 0, totalRVotes = 0;
-
+    // Adding winning 
+    let totalIVotes = 0, totalDVotes = 0, totalRVotes = 0, firstDemocratState = 0;
     electionResult.forEach((d) => {
+        d.victoryMargin = d.R_Percentage - d.D_Percentage;
+
         if(d.I_Percentage > d.D_Percentage && d.I_Percentage > d.R_Percentage){
             totalIVotes += d.Total_EV;
-            IVotes.push(d);
+            d.winningParty = 'I';
         }
         else if(d.D_Percentage > d.R_Percentage){
             totalDVotes += d.Total_EV;
-            DVotes.push(d);
+            d.winningParty = 'D';
         }
         else if(d.R_Percentage > d.D_Percentage){
             totalRVotes += d.Total_EV;
-            RVotes.push(d);
+            d.winningParty = 'R';
         }
+    })
+
+    //Group the states based on the winning party for the state;
+    //then sort them based on the margin of victory
+    electionResult.sort((d1, d2) => d1.victoryMargin - d2.victoryMargin);
+
+    let IVotes = [], otherVotes = [];
+
+    electionResult.forEach((d) => {
+        if(d.winningParty == 'I')
+            IVotes.push(d);
+        else
+            otherVotes.push(d);
     });
 
-    DVotes.sort((d1, d2) => (d2.D_Percentage - d2.R_Percentage) - (d1.D_Percentage - d1.R_Percentage));
-    RVotes.sort((d1, d2) => (d1.R_Percentage - d1.D_Percentage) - (d2.R_Percentage - d2.D_Percentage));
-
-    let data = IVotes.concat(DVotes, RVotes);
+    let data = IVotes.concat(otherVotes);
 
     let sum = 0;
-    data.forEach((d) => {
+    data.forEach((d, i) => {
+        if (i - 1 >= 0 && data[i].winningParty === "D" && data[i - 1].winningParty === "I") {
+            firstDemocratState = sum;
+        }
         d.x = sum;
         sum += d.Total_EV;
     })
-
-    console.log(data);
 
     let electoralVoteScale = d3.scaleLinear()
         .domain([0, availableEV])
         .range([0, self.svgWidth]);
 
-    let bars = self.svg.selectAll(".electoralVotes").remove()
-        .exit()
+    //Create the stacked bar chart.
+    //Use the global color scale to color code the rectangles.
+    //HINT: Use .electoralVotes class to style your bars.
+
+    let bars = self.svg.selectAll(".electoralVotes")
         .data(data)
         .enter()
         .append("rect")
@@ -107,36 +120,63 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         .attr("y", 75) 
         .attr("width", (d) => electoralVoteScale(d.Total_EV))
         .attr("height", self.svgHeight/5)
-        .attr("fill", (d) => colorScale(d.Total_EV))
         .attr("fill", function(d) {
-            if(d.I_Percentage > d.D_Percentage && d.I_Percentage > d.R_Percentage)
-                return "green";
-            else if(d.D_Percentage > d.R_Percentage)
-                return colorScale(0 - d.Total_EV);
-            else if(d.R_Percentage > d.D_Percentage)
-                return colorScale(d.Total_EV);
+            if(d.winningParty == 'I')
+                return "#5FAA70";
+            else
+                return colorScale(d.victoryMargin);
         })
 
-    //Group the states based on the winning party for the state;
-    //then sort them based on the margin of victory
-
-    //Create the stacked bar chart.
-    //Use the global color scale to color code the rectangles.
-    //HINT: Use .electoralVotes class to style your bars.
-
-    //Display total count of electoral votes won by the Democrat and Republican party
-    //on top of the corresponding groups of bars.
-    //HINT: Use the .electoralVoteText class to style your text elements;  Use this in combination with
-    // chooseClass to get a color based on the party wherever necessary
+    bars.exit().remove();
 
     //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
     //HINT: Use .middlePoint class to style this bar.
+
+    self.svg.selectAll('.middlePoint').remove();
+    self.svg.append('line')  
+        .attr('class', 'middlePoint') 
+        .attr('x1', self.svgWidth / 2)
+        .attr('x2', self.svgWidth / 2)
+        .attr('y1', 60)
+        .attr('y2', 120)
+        .style('stroke', 'black')
+
 
     //Just above this, display the text mentioning the total number of electoral votes required
     // to win the elections throughout the country
     //HINT: Use .electoralVotesNote class to style this text element
 
+    self.svg.selectAll('.electoralVotesNote').remove();
+    self.svg.append('text')
+        .attr('class','electoralVotesNote')
+        .attr("x", self.svgWidth / 2)
+        .attr('y', 50)
+        .text("Electoral Vote (270 needed to win)");
+
+    //Display total count of electoral votes won by the Democrat and Republican party
+    //on top of the corresponding groups of bars.
+    //HINT: Use the .electoralVoteText class to style your text elements;  Use this in combination with
+    // chooseClass to get a color based on the party wherever necessary
     //HINT: Use the chooseClass method to style your elements based on party wherever necessary.
+
+    self.svg.selectAll(".electoralVoteText").remove();
+    self.svg.append('text')
+        .attr("class", `electoralVoteText ${self.chooseClass('R')}`)
+        .attr("x", self.svgWidth)
+        .attr("y", 60)
+        .text(totalRVotes)
+
+    self.svg.append('text')
+        .attr("class", `electoralVoteText ${self.chooseClass('I')}`)
+        .attr("x", 0)
+        .attr("y", 60)
+        .text(totalIVotes > 0 ? totalIVotes : "");
+
+    self.svg.append('text')
+        .attr("class", `electoralVoteText ${self.chooseClass('D')}`)
+        .attr("x", totalIVotes == 0 ? 0 : electoralVoteScale(firstDemocratState))
+        .attr("y", 60)
+        .text(totalDVotes);
 
     //******* TODO: PART V *******
     //Implement brush on the bar chart created above.

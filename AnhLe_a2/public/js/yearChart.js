@@ -62,7 +62,6 @@ YearChart.prototype.chooseClass = function (party) {
  */
 YearChart.prototype.update = function(){
     var self = this;
-    var clicked = null;
 
     //Domain definition for global color scale
     var domain = [-60,-50,-40,-30,-20,-10,0,10,20,30,40,50,60 ];
@@ -100,7 +99,7 @@ YearChart.prototype.update = function(){
     console.log(this);
 
     let yearScale = d3.scaleLinear()
-        .domain([d3.min(this.electionWinners, (d) => +d.YEAR), d3.max(this.electionWinners, (d) => +d.YEAR)])
+        .domain([d3.min(this.electionWinners, (d) => d.YEAR), d3.max(this.electionWinners, (d) => d.YEAR)])
         .range([self.margin.left, self.svgWidth - self.margin.left]);
 
     let dottedLines = self.svg.selectAll("line")
@@ -119,10 +118,7 @@ YearChart.prototype.update = function(){
         .append("circle")
         .attr("class", (d) => this.chooseClass(d.PARTY))
         .attr("id", (d) => d.YEAR)
-        .attr('cx',function(d) {
-            let y = +d.YEAR;
-            return yearScale(y);
-        })
+        .attr('cx', (d) => yearScale(d.YEAR))
         .attr("cy", 50)
         .attr("r", 10)
         .on("click", function() {
@@ -155,9 +151,9 @@ YearChart.prototype.update = function(){
         .data(self.electionWinners)
         .enter()
         .append("text")
-        .attr("x", (d, i) => 15 + i * self.svgWidth/self.electionWinners.length)
+        .attr("class", "yeartext")
+        .attr("x", (d) => yearScale(d.YEAR))
         .attr("y", 75)
-        .attr("font-size", "0.75em")
         .text((d) => d.YEAR);
 
     //******* TODO: EXTRA CREDIT *******
