@@ -64,7 +64,7 @@ YearChart.prototype.update = function(){
     var self = this;
 
     //Domain definition for global color scale
-    var domain = [-60,-50,-40,-30,-20,-10,0,10,20,30,40,50,60 ];
+    var domain = [-60,-50,-40,-30,-20,-10,0,10,20,30,40,50,60];
 
     //Color range for global color scale
     var range = ["#0066CC", "#0080FF", "#3399FF", "#66B2FF", "#99ccff", "#CCE5FF", "#ffcccc", "#ff9999", "#ff6666", "#ff3333", "#FF0000", "#CC0000"];
@@ -95,8 +95,6 @@ YearChart.prototype.update = function(){
 
     //Election information corresponding to that year should be loaded and passed to
     // the update methods of other visualizations
-
-    console.log(this);
 
     let yearScale = d3.scaleLinear()
         .domain([d3.min(this.electionWinners, (d) => d.YEAR), d3.max(this.electionWinners, (d) => d.YEAR)])
@@ -141,9 +139,10 @@ YearChart.prototype.update = function(){
                         d.Year = +d.Year;
                     });
                     self.electoralVoteChart.update(data, self.colorScale)
+                    self.votePercentageChart.update(data)
                 })
             .catch(error => {
-                console.error("Error loading the data")
+                console.log(error)
             });
         })
 
