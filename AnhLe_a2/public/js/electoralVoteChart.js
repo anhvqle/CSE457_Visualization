@@ -4,9 +4,9 @@
  *
  * @param brushSelection an instance of the BrushSelection class
  */
-function ElectoralVoteChart(){
-
+function ElectoralVoteChart(brushSelection){
     var self = this;
+    self.brushSelection = brushSelection;
     self.init();
 };
 
@@ -181,5 +181,23 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Implement a call back method to handle the brush end event.
     //Call the update method of brushSelection and pass the data corresponding to brush selection.
     //HINT: Use the .brush class to style the brush.
+    d3.selectAll("li").remove()
+    self.svg.select(".brush").remove().exit()
+    function brushed({selection}) {
+        if (selection) {
+            console.log(selection);
+            let selectedStates = data.filter((d) => {
+                return selection[0] <= electoralVoteScale(d.x) && electoralVoteScale(d.x) + electoralVoteScale(d.Total_EV) <= selection[1];
+            }).map((d) => d.State);
+            self.brushSelection.update(selectedStates)
+        }
+    }
 
+    let brush = d3.brushX()
+        .extent([[0,50],[this.svgWidth,this.svgHeight - 25]])
+        .on("end", brushed);
+
+    this.svg.append("g")
+        .attr("class", "brush")
+        .call(brush);
 };
