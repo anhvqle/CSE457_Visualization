@@ -31,9 +31,7 @@ async function updateVisualization(orders) {
                 return "red";
             }
         })
-        
-	circle
-		.attr("cx", (d, i) => i * 100 + padding + textPadding)
+        .attr("cx", (d, i) => i * 100 + padding + textPadding)
         .attr("cy", height / 2)
         .attr("r", 25)
 

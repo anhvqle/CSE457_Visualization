@@ -80,25 +80,18 @@ function updateVisualization() {
 	yAxis.scale(yScale);
 	xAxis.scale(xScale).ticks(10);
 
-	svg.selectAll("rect").remove();
     const rect = svg.selectAll("rect").data(data);
     rect.enter()
         .append("rect")
         .attr("class", "bar")
         .attr("x", (d) => xScale(d.company))
         .attr("width", xScale.bandwidth())
-
-    svg.selectAll("rect")
         .transition()
         .duration(750)
         .attr("y", (d) => yScale(d[rankingType]))
-        // .attr("width", 0)
-        // .attr("width", (d) => aScale(d.a))
         .attr("height", (d) => height - yScale(d[rankingType]))
 
-    // rect.exit().remove();
-		
-	// console.log(data.map(d => d[rankingType]));
+    rect.exit().remove();
 		
 	g1.attr("class", "axis x-axis")
 	.transition()
