@@ -122,7 +122,7 @@ VotePercentageChart.prototype.update = function(electionResult){
         {"party": "R", "percentage": percentRVotes, "x": percentIVotes + percentDVotes}
     ]
 
-    let bars = self.svg.selectAll(".votePercentage")
+    let bars = self.svg.selectAll(".votePercentage").exit().remove()
         .data(percentData)
         .enter()
         .append("rect")
@@ -135,13 +135,29 @@ VotePercentageChart.prototype.update = function(electionResult){
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
-    bars.exit().remove();
-
     //Display the total percentage of votes won by each party
     //on top of the corresponding groups of bars.
     //HINT: Use the .votesPercentageText class to style your text elements;  Use this in combination with
     // chooseClass to get a color based on the party wherever necessary
     self.svg.selectAll(".votesPercentageText").remove();
+    self.svg.append('text')
+        .attr("class", `votesPercentageText ${self.chooseClass('R')}`)
+        .attr("x", self.svgWidth)
+        .attr("y", 30)
+        .text(electionResult[0].R_Nominee)
+
+    self.svg.append('text')
+        .attr("class", `votesPercentageText ${self.chooseClass('I')}`)
+        .attr("x", 0)
+        .attr("y", 30)
+        .text(percentIVotes > 0 ? electionResult[0].I_Nominee : "");
+
+    self.svg.append('text')
+        .attr("class", `votesPercentageText ${self.chooseClass('D')}`)
+        .attr("x", percentIVotes == 0 ? 0 : (percentIVotes > 0 && percentIVotes < 8 ? percentScale(percentIVotes + 10) : percentScale(percentIVotes)))
+        .attr("y", 30)
+        .text(electionResult[0].D_Nominee);
+
     self.svg.append('text')
         .attr("class", `votesPercentageText ${self.chooseClass('R')}`)
         .attr("x", self.svgWidth)
@@ -156,7 +172,7 @@ VotePercentageChart.prototype.update = function(electionResult){
 
     self.svg.append('text')
         .attr("class", `votesPercentageText ${self.chooseClass('D')}`)
-        .attr("x", percentIVotes == 0 ? 0 : percentScale(percentIVotes))
+        .attr("x", percentIVotes == 0 ? 0 : (percentIVotes > 0 && percentIVotes < 8 ? percentScale(percentIVotes + 10) : percentScale(percentIVotes)))
         .attr("y", 60)
         .text(`${percentDVotes}%`);
 

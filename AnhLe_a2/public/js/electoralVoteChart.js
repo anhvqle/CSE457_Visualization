@@ -111,7 +111,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
 
-    let bars = self.svg.selectAll(".electoralVotes")
+    let bars = self.svg.selectAll(".electoralVotes").exit().remove()
         .data(data)
         .enter()
         .append("rect")
@@ -126,8 +126,6 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
             else
                 return colorScale(d.victoryMargin);
         })
-
-    bars.exit().remove();
 
     //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
     //HINT: Use .middlePoint class to style this bar.
