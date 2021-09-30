@@ -79,81 +79,100 @@ YearChart.prototype.update = function(){
 
     // ******* TODO: PART I *******
 
-    // Create the chart by adding circle elements representing each election year
-    //The circles should be colored based on the winning party for that year
-    //HINT: Use the .yearChart class to style your circle elements
-    //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
-
-    //Append text information of each year right below the corresponding circle
-    //HINT: Use .yeartext class to style your text elements
-
-    //Style the chart by adding a dashed line that connects all these years.
-    //HINT: Use .lineChart to style this dashed line
-
     //Clicking on any specific year should highlight that circle and  update the rest of the visualizations
     //HINT: Use .highlighted class to style the highlighted circle
 
     //Election information corresponding to that year should be loaded and passed to
     // the update methods of other visualizations
 
-    let yearScale = d3.scaleLinear()
+    d3.csv("data/election-results-1940.csv").then(data => {
+        data.forEach(function (d) {
+            d.Total_EV = +d.Total_EV;
+            d.D_Percentage = +d.D_Percentage;
+            d.D_Votes = +d.D_Votes;
+            d.R_Percentage = +d.R_Percentage;
+            d.R_Votes = +d.R_Votes;
+            d.I_Percentage = +d.I_Percentage;
+            d.I_Votes = +d.I_Votes;
+            d.Year = +d.Year;
+        });
+        let yearScale = d3.scaleLinear()
         .domain([d3.min(this.electionWinners, (d) => d.YEAR), d3.max(this.electionWinners, (d) => d.YEAR)])
         .range([self.margin.left, self.svgWidth - self.margin.left]);
 
-    let dottedLines = self.svg.selectAll("line")
-        .data(self.electionWinners)
-        .enter()
-        .append("line")
-        .attr("class", "lineChart")
-        .attr("x1", self.svgBounds.left)
-        .attr("y1", 50)
-        .attr("x2", self.svgBounds.right)
-        .attr("y2", 50)
+        //Style the chart by adding a dashed line that connects all these years.
+        //HINT: Use .lineChart to style this dashed line
+        let dottedLines = self.svg.selectAll("line")
+            .data(self.electionWinners)
+            .enter()
+            .append("line")
+            .attr("class", "lineChart")
+            .attr("x1", self.svgBounds.left)
+            .attr("y1", 50)
+            .attr("x2", self.svgBounds.right)
+            .attr("y2", 50)
 
-    let circles = self.svg.selectAll("circle")
-        .data(self.electionWinners)
-        .enter()
-        .append("circle")
-        .attr("class", (d) => this.chooseClass(d.PARTY))
-        .attr("id", (d) => d.YEAR)
-        .attr('cx', (d) => yearScale(d.YEAR))
-        .attr("cy", 50)
-        .attr("r", 10)
-        .on("click", function() {
-            self.svg.selectAll("circle").style("stroke", "none")
-            d3.select(this).style("stroke", "black")
-            d3.select(this).style("stroke-width", "1.5")
+        // Create the chart by adding circle elements representing each election year
+        //The circles should be colored based on the winning party for that year
+        //HINT: Use the .yearChart class to style your circle elements
+        //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
+        let circles = self.svg.selectAll("circle")
+            .data(self.electionWinners)
+            .enter()
+            .append("circle")
+            .attr("class", (d) => this.chooseClass(d.PARTY))
+            .attr("id", (d) => d.YEAR)
+            .attr('cx', (d) => yearScale(d.YEAR))
+            .attr("cy", 50)
+            .attr("r", 10)
+            .on("click", function() {
+                self.svg.selectAll("circle").style("stroke", "none")
+                d3.select(this).style("stroke", "black")
+                d3.select(this).style("stroke-width", "1.5")
 
-            let year = d3.select(this).attr('id');
-            let filePath = `data/election-results-${year}.csv`
+                let year = d3.select(this).attr('id');
+                let filePath = `data/election-results-${year}.csv`
 
-            d3.csv(filePath).then(data => {
-                    data.forEach(function (d) {
-                        d.Total_EV = +d.Total_EV;
-                        d.D_Percentage = +d.D_Percentage;
-                        d.D_Votes = +d.D_Votes;
-                        d.R_Percentage = +d.R_Percentage;
-                        d.R_Votes = +d.R_Votes;
-                        d.I_Percentage = +d.I_Percentage;
-                        d.I_Votes = +d.I_Votes;
-                        d.Year = +d.Year;
-                    });
-                    self.electoralVoteChart.update(data, self.colorScale)
-                    self.votePercentageChart.update(data)
-                })
-            .catch(error => {
-                console.log(error)
-            });
-        })
+                d3.csv(filePath).then(data => {
+                        data.forEach(function (d) {
+                            d.Total_EV = +d.Total_EV;
+                            d.D_Percentage = +d.D_Percentage;
+                            d.D_Votes = +d.D_Votes;
+                            d.R_Percentage = +d.R_Percentage;
+                            d.R_Votes = +d.R_Votes;
+                            d.I_Percentage = +d.I_Percentage;
+                            d.I_Votes = +d.I_Votes;
+                            d.Year = +d.Year;
+                        });
+                        self.electoralVoteChart.update(data, self.colorScale)
+                        self.votePercentageChart.update(data)
+                        self.tileChart.update(data, self.colorScale)
+                    })
+                .catch(error => {
+                    console.log(error)
+                });
+            })
 
-    let yearTexts = self.svg.selectAll("text")
-        .data(self.electionWinners)
-        .enter()
-        .append("text")
-        .attr("class", "yeartext")
-        .attr("x", (d) => yearScale(d.YEAR))
-        .attr("y", 75)
-        .text((d) => d.YEAR);
+        d3.select("circle").style("stroke", "black")
+        d3.select("circle").style("stroke-width", "1.5")
+
+        //Append text information of each year right below the corresponding circle
+        //HINT: Use .yeartext class to style your text elements
+        let yearTexts = self.svg.selectAll("text")
+            .data(self.electionWinners)
+            .enter()
+            .append("text")
+            .attr("class", "yeartext")
+            .attr("x", (d) => yearScale(d.YEAR))
+            .attr("y", 75)
+            .text((d) => d.YEAR);
+            self.electoralVoteChart.update(data, self.colorScale)
+            self.votePercentageChart.update(data)
+            self.tileChart.update(data, self.colorScale)
+    })
+    .catch(error => {
+        console.log(error)
+    });
 
     //******* TODO: EXTRA CREDIT *******
 
