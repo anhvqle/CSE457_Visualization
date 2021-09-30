@@ -122,8 +122,7 @@ VotePercentageChart.prototype.update = function(electionResult){
         {"party": "R", "percentage": percentRVotes, "x": percentIVotes + percentDVotes}
     ]
 
-    let bars = self.svg.selectAll(".votePercentage").exit()
-        .remove()
+    let bars = self.svg.selectAll(".votePercentage")
         .data(percentData)
         .enter()
         .append("rect")
@@ -136,6 +135,7 @@ VotePercentageChart.prototype.update = function(electionResult){
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
+    bars.exit().remove();
 
     //Display the total percentage of votes won by each party
     //on top of the corresponding groups of bars.

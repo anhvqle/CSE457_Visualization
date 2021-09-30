@@ -124,15 +124,10 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
             if(d.winningParty == 'I')
                 return "#5FAA70";
             else
-<<<<<<< HEAD
                 return colorScale(d.victoryMargin);
         })
 
     bars.exit().remove();
-=======
-                return colorScale(d.R_Percentage - d.D_Percentage);
-        }) 
->>>>>>> 49769a2... Assignment 2: Vote Percentage Chart Finished
 
     //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
     //HINT: Use .middlePoint class to style this bar.

@@ -216,11 +216,15 @@ TileChart.prototype.update = function(electionResult, colorScale){
     //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
     //HINT: Use .tile class to style your tiles;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     self.svg.selectAll(".tile").remove()
 >>>>>>> 19928c7... 1
     let tiles = self.svg.selectAll(".tile").exit()
         .remove()
+=======
+    let tiles = self.svg.selectAll(".tile")
+>>>>>>> bea5662... Studio 5: Dynamic Updates with D3 (Update, Exit, Remove)
         .data(electionResult)
         .enter()
         .append("rect")
@@ -240,9 +244,14 @@ TileChart.prototype.update = function(electionResult, colorScale){
         .on('mouseout', tip.hide);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     self.svg.selectAll("g").remove()
 >>>>>>> 19928c7... 1
+=======
+    tiles.exit().remove();
+
+>>>>>>> bea5662... Studio 5: Dynamic Updates with D3 (Update, Exit, Remove)
     var abbreviation = self.svg.append("g");
     abbreviation.selectAll("text")
         .data(electionResult)
