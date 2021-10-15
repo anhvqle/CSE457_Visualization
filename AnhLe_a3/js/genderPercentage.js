@@ -8,8 +8,6 @@ function GenderPercentage(stories, colorScale){
 GenderPercentage.prototype.init = function(){
     var self = this;
 
-    console.log("Percentage");
-
     //Gets access to the div element created for this chart from HTML
     var divGenderPercentage = d3.select("#gender-percentage").html("");
     self.svgBounds = divGenderPercentage.node().getBoundingClientRect();
@@ -31,7 +29,7 @@ GenderPercentage.prototype.tooltip_render = function (tooltip_data) {
     var self = this;
     var text = "<ul>";
     tooltip_data.result.forEach(function(row){
-        text += "<li class = " + row.gender + ">" + row.gender+":\t\t"+row.wordCount+"("+row.percentage+"%)" + "</li>"
+        text += "<li class = " + row.gender + ">" + row.gender+":\t\t"+row.wordCount+" words ("+row.percentage+"%)" + "</li>"
     });
 
     return text;
@@ -83,7 +81,8 @@ GenderPercentage.prototype.updateGenderPercentage = function () {
         .attr("height", self.svgHeight/5)
         .call(tip)
         .on('mouseover', function(e) {
-            d3.selectAll(".male, .neutral, .female").attr("opacity", 0.5);
+            tip.show(e)
+            d3.selectAll(".male, .neutral, .female").attr("opacity", 0.3);
             if (e.target.classList.contains("male")) {
                 d3.selectAll(".male").attr("opacity", 1);
             } else if (e.target.classList.contains("neutral")) {
@@ -91,11 +90,10 @@ GenderPercentage.prototype.updateGenderPercentage = function () {
             } else if (e.target.classList.contains("female")) {
                 d3.selectAll(".female").attr("opacity", 1);
             }
-            tip.show
         })
         .on('mouseout', function(e) {
+            tip.hide(e)
             d3.selectAll(".male, .neutral, .female").attr("opacity", 1);
-            tip.hide
         })
 
     self.svg.selectAll(".genderPercentageText").remove();

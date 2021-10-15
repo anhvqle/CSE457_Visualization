@@ -22,8 +22,8 @@ header {
     color: #3182bd;
 }
 .neutral{
-    fill: rgb(235, 182, 84);
-    color: rgb(235, 182, 84);
+    fill: rgb(238, 177, 62);
+    color: rgb(238, 177, 62);
     text-anchor:start;
 }
 .female{
@@ -34,4 +34,63 @@ header {
 
 .genderPercentageText{
     font-size: 15px;
+}
+
+.d3-tip {
+    padding: 5px;
+    min-width: 350px;
+    border-style: groove;
+    background: #FFFFFF;
+    color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    pointer-events: none;
+}
+.tooltip-title{
+    font-size:18px;
+    font-family: "Arial Black";
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.8);
+    position: relative;
+    pointer-events: none;
+}
+
+/* Northward tooltips */
+.d3-tip.n:after {
+    content: "\25BC";
+    top: 100%;
+    left: 0;
+    text-align: center;
+}
+
+/* Eastward tooltips */
+.d3-tip.e:after {
+    content: "\26A0";
+    top: -800px;
+    left: -8px;
+}
+
+/* Southward tooltips */
+.d3-tip.s:after {
+    content: "\25B2";
+    top: -8px;
+    left: 1481px;
+    text-align: center;
+}
+
+/* Westward tooltips */
+.d3-tip.w:after {
+    content: "\25B6";
+    top: 50%;
+    left: 100%;
+}
+
+h3{
+    text-anchor:middle;
+    font-size: 32px;
 }

@@ -26,38 +26,43 @@ Wordle.prototype.init = function(){
 Wordle.prototype.updateWordle = function () {
     var self = this;
 
-    let words = self.stories.frequency.map((d) => d[0]);
-
 	self.svg
         .append("text")
         .attr("class", "story-title")
         .attr("y", 30)
-		.attr("x", self.svgWidth/2 - self.stories.title.length*9)
+		.attr("x", self.svgWidth/2 - self.stories.title.length*10)
 		.html(self.stories.title)
-    
-    d3.layout.cloud()
-        .size([600, 600])
-        .words(words.map(function(d) {
-          return {text: d, size: 10 + Math.random() * 90, test: "haha"};
-        }))
-        .padding(5)
-        .rotate(function() { return ~~(Math.random() * 2) * 90; })
-        .font("Impact")
-        .fontSize(function(d) { return d.size; })
-        .on("end", draw)
-        .start();
-    
+
+    let frequency_list = self.stories.frequency_list;
+
+    console.log(frequency_list);
+
+    var color = d3.scaleLinear()
+            .domain([0,1,2,3,4,5,6,10,15,20,100])
+            .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+    d3.layout.cloud().size([600, 600])
+            .words(frequency_list)
+            .rotate(0)
+            .fontSize(function(d) { return d.size; })
+            .on("end", draw)
+            .start();
+
     function draw(words) {
-        self.svg.append("g")
-            .attr("transform","translate(500,350)")
-            .selectAll("text")
+        let g = self.svg.append("g")
+            .attr("transform", "translate(420,310)")
+            
+        g.selectAll(".wordle-text")
             .data(words)
-            .enter().append("text")
+            .enter()
+            .append("text")
+            .attr("class", "wordle-text")
+            .transition()
+            .duration(600)
             .style("font-size", function(d) { return d.size + "px"; })
-            .style("font-family", "Impact")
-            .attr("text-anchor", "middle")
+            .style("fill", function(d, i) { return color(i); })
             .attr("transform", function(d) {
-            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                return "translate(" + [d.x, d.y + 50] + ")rotate(" + d.rotate + ")";
             })
             .text(function(d) { return d.text; });
     }

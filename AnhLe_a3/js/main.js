@@ -43,9 +43,17 @@ function loadData() {
                 sortFrequency.push([f, frequency[f]]);
             }
 
+            sortFrequency = sortFrequency.filter((a) => a[0].length > 1);
+
             sortFrequency.sort((a, b) =>  b[1] - a[1]);
 
-            d.frequency = sortFrequency.slice(0, 50);
+            let frequency_list = [];
+            sortFrequency.forEach((a) => {
+                let temp = {"text": a[0], "size": a[1]*2}
+                frequency_list.push(temp)
+            })
+
+            d.frequency_list = frequency_list.slice(0, 50);
             d.index = i;
             d.male_keyword_count = male_keyword_count;
             d.female_keyword_count = female_keyword_count;
