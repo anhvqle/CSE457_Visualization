@@ -37,7 +37,15 @@ function loadData() {
                 }
                 frequency[w] += 1;
             });
-            d.frequency = frequency;
+
+            let sortFrequency = [];
+            for (let f in frequency) {
+                sortFrequency.push([f, frequency[f]]);
+            }
+
+            sortFrequency.sort((a, b) =>  b[1] - a[1]);
+
+            d.frequency = sortFrequency.slice(0, 50);
             d.index = i;
             d.male_keyword_count = male_keyword_count;
             d.female_keyword_count = female_keyword_count;

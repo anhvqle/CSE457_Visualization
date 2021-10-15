@@ -54,7 +54,6 @@ GenderPercentage.prototype.updateGenderPercentage = function () {
             return [0,0];
         })
         .html(function(d) {
-            console.log("TIP HERE");
             tooltip_data = {
                 "result":[
                     {"gender": "male", "wordCount": self.stories.male_keyword_count,"percentage": percentMale,"party":"D"} ,
