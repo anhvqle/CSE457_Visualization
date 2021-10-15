@@ -1,6 +1,37 @@
 body { 
     margin: 2%;
     background:#faebd0;
-    text-align: center;
     font-family: "Monaco";
+}
+
+header {
+    text-align: center;
+}
+
+.story-title {
+    font-size: 2.2em;
+    font-family: "Baskerville";
+    fill: steelBlue;
+    font-weight: bold;
+}
+
+
+.male{
+    fill: #3182bd;
+    text-anchor:start;
+    color: #3182bd;
+}
+.neutral{
+    fill: rgb(235, 182, 84);
+    color: rgb(235, 182, 84);
+    text-anchor:start;
+}
+.female{
+    fill: rgb(222, 96, 117);
+    color: rgb(222, 96, 117);
+    text-anchor:end;
+}
+
+.genderPercentageText{
+    font-size: 15px;
 }
