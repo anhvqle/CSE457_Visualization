@@ -49,7 +49,7 @@ function loadData() {
 
             let frequency_list = [];
             sortFrequency.forEach((a) => {
-                let temp = {"text": a[0], "size": a[1]*2}
+                let temp = {"text": a[0], "count": a[1]}
                 frequency_list.push(temp)
             })
 

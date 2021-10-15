@@ -30,12 +30,10 @@ Wordle.prototype.updateWordle = function () {
         .append("text")
         .attr("class", "story-title")
         .attr("y", 30)
-		.attr("x", self.svgWidth/2 - self.stories.title.length*10)
-		.html(self.stories.title)
+		.attr("x", self.svgWidth/2 - 130)
+		.html("Word Cloud")
 
     let frequency_list = self.stories.frequency_list;
-
-    console.log(frequency_list);
 
     var color = d3.scaleLinear()
             .domain([0,1,2,3,4,5,6,10,15,20,100])
@@ -44,7 +42,7 @@ Wordle.prototype.updateWordle = function () {
     d3.layout.cloud().size([600, 600])
             .words(frequency_list)
             .rotate(0)
-            .fontSize(function(d) { return d.size; })
+            .fontSize((d) => d.count * 2)
             .on("end", draw)
             .start();
 
@@ -59,7 +57,7 @@ Wordle.prototype.updateWordle = function () {
             .attr("class", "wordle-text")
             .transition()
             .duration(600)
-            .style("font-size", function(d) { return d.size + "px"; })
+            .style("font-size", function(d) { return d.count + "px"; })
             .style("fill", function(d, i) { return color(i); })
             .attr("transform", function(d) {
                 return "translate(" + [d.x, d.y + 50] + ")rotate(" + d.rotate + ")";

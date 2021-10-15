@@ -38,8 +38,6 @@ GenderPercentage.prototype.tooltip_render = function (tooltip_data) {
 GenderPercentage.prototype.updateGenderPercentage = function () {
     var self = this;
 
-    console.log(self.stories);
-
     let total = self.stories.female_keyword_count + self.stories.male_keyword_count + self.stories.neutral_keyword_count;
 
     let percentMale = Number((self.stories.male_keyword_count/total * 100).toFixed(2));

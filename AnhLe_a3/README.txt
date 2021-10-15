@@ -4,3 +4,4 @@ I used external resources:
 3. Assignment 2 codes
 4. http://bl.ocks.org/ericcoopey/6382449
 5. http://bl.ocks.org/joews/9697914
+6. https://www.d3-graph-gallery.com/graph/circular_barplot_label.html

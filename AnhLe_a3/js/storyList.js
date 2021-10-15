@@ -55,5 +55,6 @@ StoryList.prototype.chooseStory = function () {
 
 function updateVis(stories, colorScale) {
     let wordle = new Wordle(stories, colorScale);
+    let circularBarplot = new CircularBarplot(stories, colorScale);
     let genderPercentage = new GenderPercentage(stories, colorScale);
 }

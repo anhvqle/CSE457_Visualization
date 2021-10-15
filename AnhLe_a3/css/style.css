@@ -15,6 +15,14 @@ header {
     font-weight: bold;
 }
 
+#homescreen {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    display: block;
+    color: grey;
+}
 
 .male{
     fill: #3182bd;

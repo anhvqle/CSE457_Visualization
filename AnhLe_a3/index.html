@@ -20,6 +20,9 @@
                 <div id="story-list"></div>
             </div>
             <div class="col-12 col-md-8">
+                <div id="circular-barplot">
+                    <p id="homescreen">Select a tale on your left to see the analysis</p>
+                </div>
                 <div id="wordle"></div>
                 <div id="gender-percentage"></div>
             </div>
@@ -28,11 +31,13 @@
         <footer>
             <script src="d3.layout.cloud.js"></script>
             <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+            <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3-scale-radial.js"></script>
             <script src="https://d3js.org/d3.v6.min.js"></script>
             <script src="bower_components/d3-tip/index.js"></script>
             <script src="js/storyList.js"></script>
             <script src="js/wordle.js"></script>
             <script src="js/genderPercentage.js"></script>
+            <script src="js/circularBarplot.js"></script>
             <script src="js/main.js"></script>
         </footer>
     </body>
