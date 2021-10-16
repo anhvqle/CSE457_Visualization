@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Assignment 5: Process Book</title>
+</head>
+<body>
+    <header>
+        <h2>ONCE UPON A TIME: Process Book</h2>
+        <p class="info">Name: Anh Le; E-Mail: a.v.le@wustl.edu; UID: 488493</p>
+    </header>
+    
+    <h2>Questions</h2>
+    <ol>
+        <li>
+            What do you want to achieve with the visualization?
+            <p>
+                - The visualization helps determine which gender keywords are being used the most in the story. I cleaned up all the words in all the stories <br />
+                (lowercase, remove punctuation, etc.) and count how many times each gender pronounes are being used. For example, some male keywords can be <br />
+                <i>"men, king, husband, etc."</i>, female keywords can be <i>"she, wife, princess, etc."</i>, and neutral gender keywords are <i>"they, children, parent, etc."</i><br />
+                <p></p>
+                - I aim to see which keywords are being used the most in each fairy tale. This could help in conveying the general theme for each story. For <br />
+                example, if a story has <i>"queen"</i> and <i>"she"</i> being one of the most common words in the story, user will be able to tell that the story is<br />
+                about a dominant female character. Meanwhile, if the majority words are gender neutral keywords, we can assume that the story is not written <br />
+                around one single character.
+            </p>
+        </li>
+        <li>
+            What tasks do you want to support?
+            <p>
+                - It might be a good filter for user before they decide the next story that they might want to read. The visualization can help them see the <br />
+                general idea, general character of the story before they start a new book. Moreover, users will have the ability to see the gender keywords <br />
+                distributions over the story they select. A word cloud is implemented to let user browse through realy quick to see if there are any inappropriate <br />
+                words (profanity, etc.) that happen frequently thorughout the story. 
+            </p>
+        </li>
+        <li>
+            What designs will help you accomplish these?
+            <p>
+                - To allow to select which story to look at the analysis, I will have a left column with all the stories listed to provide easy access to available <br />
+                books. Moreover, when choosing a story, I will have indicator <i>(color changing, "👉🏼" icon, etc.)</i> to let user know which story they are looking at.<br />
+                That is the whole purpose of the left column, to provide a list of available fairy tales.
+                <p></p>
+                - On the right, I will have two - three charts, graphs indicating the most common words used in selected story. I believe a good visualization can <br />
+                be a word cloud as well as a barplot to indicate the frequency of a key word showing up in the story. Finally, I think I will implement a percentage <br />
+                chart showing the percentage of each gender keywords compared to each other. Of course the chart will be color coded for easier visualization. 
+            </p>
+        </li>
+    </ol>
+
+    <hr>
+    <h2>Sketches</h2>
+    <img src="images/sketch.png" alt="Sketch">
+    <hr>
+    <h2>Final Design</h2>
+    <img src="images/final_design.png" alt="Final Design">
+    <img src="images/final_design2.png" alt="Final Design 2">
+</body>
+</html>

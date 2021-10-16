@@ -11,8 +11,8 @@ Wordle.prototype.init = function(){
     //Gets access to the div element created for this chart from HTML
     var divWordle = d3.select("#wordle").html("");
     self.svgBounds = divWordle.node().getBoundingClientRect();
-    self.svgWidth = 1000;
-    self.svgHeight = 600;
+    self.svgWidth = 500;
+    self.svgHeight = 500;
 
     //creates svg element within the div
 
@@ -48,7 +48,7 @@ Wordle.prototype.updateWordle = function () {
 
     function draw(words) {
         let g = self.svg.append("g")
-            .attr("transform", "translate(420,310)")
+            .attr("transform", "translate(200,250)")
             
         g.selectAll(".wordle-text")
             .data(words)

@@ -11,8 +11,8 @@ CircularBarplot.prototype.init = function(){
     
     let divCircularBarplot = d3.select("#circular-barplot").html("");
     self.svgBounds = divCircularBarplot.node().getBoundingClientRect();
-    self.svgWidth = 1000;
-    self.svgHeight = 600;
+    self.svgWidth = 500;
+    self.svgHeight = 500;
 
     innerRadius = 90,
     outerRadius = Math.min(self.svgWidth, self.svgHeight) / 2;
@@ -25,7 +25,7 @@ CircularBarplot.prototype.init = function(){
         .append("text")
         .attr("class", "story-title")
         .attr("y", 30)
-		.attr("x", self.svgWidth/2 - self.stories.title.length*10)
+		.attr("x", (self.svgWidth - self.stories.title.length*11)/2)
 		.html(self.stories.title)
 
     self.updateCircularBarplot();
@@ -36,7 +36,7 @@ CircularBarplot.prototype.updateCircularBarplot = function () {
 
     console.log(self.stories.frequency_list)
 
-    let g = self.svg.append("g").attr("transform", "translate(500,350)");
+    let g = self.svg.append("g").attr("transform", "translate(250,250)");
 
     let x = d3.scaleBand()
         .range([0, 2 * Math.PI])
@@ -69,19 +69,16 @@ CircularBarplot.prototype.updateCircularBarplot = function () {
         d3.select(this).attr("fill", "orange")
 
         let id = d3.select(this).attr("id");
-
         let word = id.split(" ")[0];
         let count = id.split(" ")[1];
-
-        console.log(word, count);
 
         g.selectAll(".tooltip-text")
             .data(self.stories.frequency_list)
             .enter()
             .append("text")
             .attr("class", "tooltip-text")
-            .attr("x", 200)
-            .attr("y", -200)
+            .attr("x", -100)
+            .attr("y", 200)
             .attr("font-size", "1em")
             .style('fill', 'darkOrange')
             .text(`There are ${count} ${word}'s`);
