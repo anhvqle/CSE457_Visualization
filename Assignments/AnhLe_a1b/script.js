@@ -139,7 +139,6 @@ function update(data) {
         .duration(750)
         .attr("d", aLineGenerator(data))
 
-
     // TODO: Select and update the 'b' line chart path (create your own generator)
     var bLineGenerator = d3.line()
         .x(function (d, i) {
