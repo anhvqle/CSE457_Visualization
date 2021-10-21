@@ -86,13 +86,26 @@ CountVis.prototype.initVis = function(){
 	// *** TO-DO ***
 	// Initialize brushing component
 	vis.currentBrushRegion = null;
-	
+    let brush = d3.brushX().on("brush", function({selection}){
+        if(selection == null) {
+            // No region selected (brush inactive)
+            $(vis.myEventHandler).trigger("selectionChanged", vis.x.domain());
+        } else {
+            // User selected specific region
+            $(vis.myEventHandler).trigger("selectionChanged", selection.map(vis.x.invert) );
+        } 
+    });
 
 
 	// *** TO-DO ***
 	// Append brush component here
-
-
+    vis.svg
+        .append("g")
+        .attr("class", "x")
+        .call(brush)
+        .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", vis.height);
 
 	// *** TO-DO ***
 	// Define zoom

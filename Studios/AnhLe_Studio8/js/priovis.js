@@ -79,11 +79,15 @@ PrioVis.prototype.wrangleData = function(){
     // *** TO-DO ***
 	// Create a sequence of values from 0 - 14 (priorities: 1-15; array length: 15)
 	// ...
+    let votesPerPriority = d3.range(0, 15).map((i) => 0);
 
-    
-	// Iterate over each priority and fill array
+    // Iterate over each priority and fill array
     // ...
-    
+    vis.filteredData.forEach(function (data) {
+        data.priorities.forEach((vote, i) => {
+            votesPerPriority[i] += vote;
+        });
+    });
     
 	vis.displayData = votesPerPriority;
 	// Update the visualization
@@ -127,7 +131,15 @@ PrioVis.prototype.updateVis = function(){
 
     // *** TO-DO ***
     // Update x-axis tick values to something more meaningful
-    vis.svg.select(".x-axis").call(vis.xAxis);
+    vis.svg
+        .select(".x-axis")
+        .call(vis.xAxis)
+        .selectAll("text")
+        .text(function (d) {
+            return `${d + 1}) ${vis.metaData.choices[100 + d]}`;
+        })
+        .attr("transform", "rotate(-45)")
+        .attr("text-anchor", "end");
 }
 
 
