@@ -37,5 +37,4 @@ async function updateVisualization(orders) {
 
     circle.exit().remove();
 	console.log(orders);
-	
 }
