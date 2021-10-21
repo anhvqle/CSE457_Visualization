@@ -113,7 +113,6 @@ CountVis.prototype.initVis = function(){
 	// Define zoom
     vis.zoom = d3.zoom()
         .on("zoom", function(event, d){
-            console.log("ZOOMING");
             var transform = event.transform;
             var new_xScale = transform.rescaleX(vis.x);
             vis.svg.select('.x-axis')
