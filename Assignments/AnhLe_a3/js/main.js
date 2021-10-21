@@ -60,7 +60,7 @@ function loadData() {
             d.neutral_keyword_count = neutral_keyword_count;
         });
 
-        console.log(stories)
+        console.log(stories);
 
         let colorPalette = d3.scaleOrdinal(d3.schemeCategory10);
 
