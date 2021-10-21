@@ -47,7 +47,6 @@ svg.selectAll("circle")
   .attr("r", (d) => (d.size  === "large") ? 30 : 15)
 
 
-
 // Activity III
 
 let filtered;
