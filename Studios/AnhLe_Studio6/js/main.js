@@ -11,7 +11,6 @@ var colorScale = d3.scaleOrdinal();
 // Variables for the visualization instances
 var areachart, timeline;
 
-
 // Start application by loading the data
 loadData();
 
