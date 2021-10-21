@@ -69,6 +69,13 @@ CountVis.prototype.initVis = function(){
 			.attr("y", -8)
 			.text("Votes");
 
+    // Time Period Label
+    vis.svg.append("text")
+            .attr("class", "time-period")
+            .attr("x", vis.margin.right)
+            .attr("y", -30)
+            .text(`${minMaxX[0].getUTCFullYear()}-${(minMaxX[0].getUTCMonth()+1)}-${minMaxX[0].getUTCDate()}
+                 - ${minMaxX[1].getUTCFullYear()}-${(minMaxX[1].getUTCMonth()+1)}-${minMaxX[1].getUTCDate()}`);
 
 	// Append a path for the area function, so that it is later behind the brush overlay
 	vis.timePath = vis.svg.append("path")
@@ -86,31 +93,25 @@ CountVis.prototype.initVis = function(){
 	// *** TO-DO ***
 	// Initialize brushing component
 	vis.currentBrushRegion = null;
-    let brush = d3.brushX().on("brush", function({selection}){
+    vis.brush = d3.brushX().on("brush", function({selection}){
         if(selection == null) {
             // No region selected (brush inactive)
             $(vis.myEventHandler).trigger("selectionChanged", vis.x.domain());
         } else {
             // User selected specific region
-            $(vis.myEventHandler).trigger("selectionChanged", selection.map(vis.x.invert) );
-        } 
+            $(vis.myEventHandler).trigger("selectionChanged", selection.map(vis.x.invert));
+        }
     });
 
 
 	// *** TO-DO ***
 	// Append brush component here
-    vis.svg
-        .append("g")
-        .attr("class", "x")
-        .call(brush)
-        .selectAll("rect")
-        .attr("y", -6)
-        .attr("height", vis.height);
+    vis.svg.append("g")
+           .attr("class", "mybrush")
 
 	// *** TO-DO ***
 	// Define zoom
 
-	
 
 
 	// (Filter, aggregate, modify data)
@@ -144,6 +145,10 @@ CountVis.prototype.updateVis = function(){
 	
 	// *** TO-DO ***
 	// Call brush component here
+    vis.svg.select(".mybrush")
+        .call(vis.brush)
+        .selectAll("rect")
+        .attr("height", vis.height);
 	
 
 	// *** TO-DO ***
@@ -169,11 +174,17 @@ CountVis.prototype.updateVis = function(){
 
 CountVis.prototype.onSelectionChange = function(selectionStart, selectionEnd){
 	var vis = this;
-    // console.log('selectionStart');
-	// console.log(selectionEnd);
+
 	// *** TO-DO ***
 	// Filter data depending on selected time period (brush)
 
+    vis.svg.selectAll(".time-period").remove()
+    vis.svg.append("text")
+        .attr("class", "time-period")
+		.attr("x", vis.margin.right)
+		.attr("y", -30)
+        .text(`${selectionStart.getUTCFullYear()}-${(selectionStart.getUTCMonth()+1)}-${selectionStart.getUTCDate()}
+                 - ${selectionEnd.getUTCFullYear()}-${(selectionEnd.getUTCMonth()+1)}-${selectionEnd.getUTCDate()}`);
 
 	vis.wrangleData();
 }

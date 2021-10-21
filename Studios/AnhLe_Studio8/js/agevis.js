@@ -81,6 +81,7 @@ AgeVis.prototype.initVis = function(){
         .attr("y", vis.height + 25)
         .text("Age");
 
+    vis.displayData = vis.filteredData;
 
     // (Filter, aggregate, modify data)
     vis.wrangleData();
@@ -104,7 +105,7 @@ AgeVis.prototype.wrangleData = function(){
     
 	// Iterate over each day and fill array
 	// ...
-    vis.filteredData.forEach(function (data) {
+    vis.displayData.forEach(function (data) {
         data.ages.forEach((vote, i) => {
             votesPerAge[i] += vote;
         });
@@ -145,11 +146,12 @@ AgeVis.prototype.updateVis = function(){
 
 AgeVis.prototype.onSelectionChange = function(selectionStart, selectionEnd){
 	var vis = this;
-    //console.log('selectionStart');
-    //console.log(selectionEnd);
     
     // *** TO-DO ***
     // Filter data depending on selected time period (brush)
+    vis.displayData = vis.filteredData.filter(function(d) {
+        return d.time >= selectionStart && d.time <= selectionEnd;
+    });
 
 	vis.wrangleData();
 }

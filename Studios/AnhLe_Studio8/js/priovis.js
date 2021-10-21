@@ -63,6 +63,7 @@ PrioVis.prototype.initVis = function(){
         .attr("y", -8)
         .text("Votes");
 
+    vis.displayData = vis.filteredData;
 
     // (Filter, aggregate, modify data)
     vis.wrangleData();
@@ -79,11 +80,11 @@ PrioVis.prototype.wrangleData = function(){
     // *** TO-DO ***
 	// Create a sequence of values from 0 - 14 (priorities: 1-15; array length: 15)
 	// ...
-    let votesPerPriority = d3.range(0, 15).map((i) => 0);
+    let votesPerPriority = d3.range(0, 15).map((d) => 0);
 
     // Iterate over each priority and fill array
     // ...
-    vis.filteredData.forEach(function (data) {
+    vis.displayData.forEach(function (data) {
         data.priorities.forEach((vote, i) => {
             votesPerPriority[i] += vote;
         });
@@ -148,6 +149,9 @@ PrioVis.prototype.onSelectionChange = function(selectionStart, selectionEnd){
     
     // *** TO-DO ***
     // Filter data depending on selected time period (brush)
+    vis.displayData = vis.data.filter(function(d) {
+		return d.time >= selectionStart && d.time <= selectionEnd;
+	});
  
 
 	vis.wrangleData();

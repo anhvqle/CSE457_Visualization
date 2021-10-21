@@ -51,3 +51,7 @@ h2 {
 .bar {
 	fill: #93bebf;
 }
+
+.time-period {
+	background-color: grey;
+}
