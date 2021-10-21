@@ -35,7 +35,7 @@ const createVisualization = (values) => {
         .append("path")
         .attr("d", path)
         .attr("fill", "#3C3841");
-  
+
     var node = svg.selectAll(".node")
         .data(airportData.nodes)
         .enter()
