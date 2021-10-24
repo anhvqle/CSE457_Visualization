@@ -57,7 +57,7 @@ CircularBarplot.prototype.updateCircularBarplot = function () {
         .attr("id", (d) => d.text + " " + d.count)
         .attr("d", d3.arc()
                     .innerRadius(innerRadius)
-                    .outerRadius((d) => y(d.count * 50))
+                    .outerRadius((d) => y(d.count * 80))
                     .startAngle((d) => x(d.text))
                     .endAngle((d) => x(d.text) + x.bandwidth())
                     .padAngle(0.01)
@@ -94,11 +94,10 @@ CircularBarplot.prototype.updateCircularBarplot = function () {
         .enter()
         .append("g")
         .attr("text-anchor", (d) => (x(d.text) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start")
-        .attr("transform", (d) => "rotate(" + ((x(d.text) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(d.count * 50)+ 10) + ",0)")
+        .attr("transform", (d) => "rotate(" + ((x(d.text) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(d.count * 80)+ 10) + ",0)")
         .append("text")
         .text((d) => d.text)
         .attr("transform", (d) => (x(d.text) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)")
         .style("font-size", "12px")
         .attr("alignment-baseline", "middle")
-
 };

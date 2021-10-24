@@ -1,7 +1,18 @@
 let regex = /[!"“”#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
-let male_keywords = ['he', 'hes', 'hell', 'him', 'his', 'hed', 'men', 'man', 'gentleman', 'gentlemen', 'guy', 'gent', 'bro', 'brother', 'king', 'boyfriend', 'guys', 'husband', 'son', 'mr', 'father', 'dad', 'grandfather', 'granddad', 'newphew', 'pop', 'papa', 'sir', 'uncle', 'boy', 'boys', 'king', 'prince', 'boys'];
-let female_keywords = ['she', 'shes', 'shell', 'her', 'hers', 'shed', 'women', 'woman', 'girl', 'girls', 'girlfriend', 'mom', 'mother', 'wife', 'aunt', 'gentlewoman', 'gentlewomen', 'grandmother', 'grandwoman', 'mrs', 'madam', 'queen', 'princess', 'sister', 'lady', 'niece', 'ms', 'miss'];
-let neutral_keywords = ['you', 'youd', 'youll', 'your', 'youre', 'youve', 'yours', 'they', 'theyd', 'theyll', 'theyre', 'theyve', 'them', 'their', 'theirs', 'we', 'wed', 'well', 'were', 'weve', 'our', 'ours', 'people', 'person', 'parent', 'child', 'children', 'parents', 'sibling', 'siblings', 'i', 'me', 'ive', 'iam', 'ill'];
+let male_keywords = ['he', 'hes', 'hell', 'him', 'his', 'hed', 'men', 'man', 'gentleman', 'gentlemen', 'guy', 'gent', 'bro', 'brother', 'king','boyfriend',
+'guys', 'husband', 'son', 'mr', 'father', 'dad', 'grandfather', 'granddad', 'newphew', 'pop', 'papa', 'sir', 'uncle', 'boy', 'boys', 'king', 'prince', 'boys'];
+
+let female_keywords = ['she', 'shes', 'shell', 'her', 'hers', 'shed', 'women', 'woman', 'girl', 'girls', 'girlfriend', 'mom', 'mother', 'wife', 'aunt',
+'gentlewoman', 'gentlewomen', 'grandmother', 'grandwoman', 'mrs', 'madam', 'queen', 'princess', 'sister', 'lady', 'niece', 'ms', 'miss'];
+
+let neutral_keywords = ['you', 'youd', 'youll', 'your', 'youre', 'youve', 'yours', 'they', 'theyd', 'theyll', 'theyre', 'theyve', 'them', 'their', 'theirs',
+'we', 'wed', 'well', 'were', 'weve', 'our', 'ours', 'people', 'person', 'parent', 'child', 'children', 'parents', 'sibling', 'siblings', 'i', 'me', 'ive', 'iam', 'ill'];
+
+let removewords = ['do', 'a', 'about', 'above', 'after', 'again', 'would', 'will', 'was', 'is', 'are', 'isnt', 'arent', 'with', 'who', 'for', 'so', 'have', 'had', 'is',
+'has', 'up', 'down', 'against', 'in', 'what', 'shall', 'all', 'and', 'any', 'as', 'at', 'be', 'because', 'been', 'before', 'being', 'below', 'but', 'by', 'cant', 'can',
+'are', 'each', 'this', 'that', 'the', 'than', 'such', 'to', 'too', 'very', 'how', 'it', 'no', 'not', 'more', 'or', 'some', 'on', 'there', 'of', 'by', 'at', 'is', 'till',
+'a', 'an', 'when', 'where', 'then', 'these', 'may', 'might', 'thats', 'thatll', 'itll', 'its', 'ever', 'wont', 'if', 'could', 'should', 'off', 'out', 'were', 'werent', 'em',
+'away', 'now', 'one', 'noo', 'aint', 'never', 'here', 'ha', 'dont', 'thing', 'into', 'onto', 'thou', 'though', 'although', 'through', 'back', 'ye', 'hail', 'further'];
 
 loadData();
 
@@ -31,7 +42,16 @@ function loadData() {
             })
 
             let frequency = {};
-            filteredStory.split(" ").forEach(function(w) {
+
+            let remove_stopwords = filteredStory.split(" ");
+            let ans = [];
+            for (let i = 0; i < remove_stopwords.length; i++) {
+                if (!removewords.includes(remove_stopwords[i])) {
+                    ans.push(remove_stopwords[i]);
+                }
+            }
+
+            ans.forEach(function(w) {
                 if (!frequency[w]) {
                     frequency[w] = 0;
                 }

@@ -42,7 +42,7 @@ Wordle.prototype.updateWordle = function () {
     d3.layout.cloud().size([600, 600])
             .words(frequency_list)
             .rotate(0)
-            .fontSize((d) => d.count * 2)
+            .fontSize((d) => d.count * 4)
             .on("end", draw)
             .start();
 
@@ -58,9 +58,9 @@ Wordle.prototype.updateWordle = function () {
             .transition()
             .duration(600)
             .style("font-size", function(d) { return d.count + "px"; })
-            .style("fill", function(d, i) { return color(i); })
+            .style("fill", function(d) { return color(d.count); })
             .attr("transform", function(d) {
-                return "translate(" + [d.x, d.y + 50] + ")rotate(" + d.rotate + ")";
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
             })
             .text(function(d) { return d.text; });
     }
